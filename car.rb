@@ -74,8 +74,6 @@ end
 
 class MyCar < Vehicle
 
-  attr_reader :max_speed
-
   def initialize(year, color, model, gallons)
     super(year, color, model, gallons)
   end
@@ -99,8 +97,6 @@ class MyCar < Vehicle
 end
 
 class MyTruck < Vehicle
-
-  attr_reader :max_speed
 
   def initialize(year, color, model, gallons)
     super(year, color, model, gallons)
