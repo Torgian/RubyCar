@@ -1,8 +1,28 @@
 require 'date'
 
+module Automatic
+  def tranny_type
+    puts "Your vehicle has an automatic transmission."
+  end
+
+  # def shift 
+  #   puts "You hear the engine's tone change as your truck shifts gears."
+  # end
+end
+
+module Towability
+  def can_tow? #testing module functionality, will add more to this later.
+    puts "This truck can two up to 1200 kilograms!"
+  end
+end
+
+
 class Vehicle
   attr_accessor :speed, :on, :color
   attr_reader :year, :model, :gallons
+  
+  @@number_of_vehicles = 0
+
   def initialize(year, color, model, gallons)
     @year = year
     @model = model
@@ -10,35 +30,38 @@ class Vehicle
     @color = color
     @speed = 0
     @on = false
+    @@number_of_vehicles += 1
   end
-  
-  @@miles_per_gallon = 0
 
   def self.mileage(tank, miles)
-    @@miles_per_gallon = miles / tank
+    miles / tank
   end
   
+  def self.total_vehicles_manufactured
+    puts @@number_of_vehicles
+  end
+
   def brake
-    if self.speed == 0
+    if speed == 0
       puts "You aren't moving! Yet you keep pushing the brake..."
-    elsif self.speed >= 10
-      self.speed -= 10
-      puts "You slow down to #{self.speed} kilometers an hour."
+    elsif speed >= 10
+      @speed -= 10
+      puts "You slow down to #{speed} kilometers an hour."
     end
   end
 
   def shut_off
-    if self.on == false 
+    if on == false 
       puts "Your car is already off."
     else
-      self.on = false
+      @on = false
       puts "You turn off your car. The engine falls silent."
     end
   end
 
   def turn_on
-    if self.on == false
-      self.on = true
+    if on == false
+      @on = true
       puts "The car's engine rumbles and sparks to life."
     else
       puts "Your car is already running!"
@@ -47,8 +70,7 @@ class Vehicle
 
   def drive(distance)
     puts "You drive #{distance} miles."
-    Vehicle.mileage(self.gallons, distance.to_i)
-    puts "When you stop in the gas station, you find that your car gets #{@@miles_per_gallon} miles per gallon."
+    puts "When you stop in the gas station, you find that your car gets #{Vehicle.mileage(gallons, distance.to_i)} miles per gallon."
   end
 
   def look_at
@@ -59,7 +81,7 @@ class Vehicle
       puts "Your #{model} carves a dark outline in the moon's pale light."
       puts "You feel dangerous. Perhaps you should go find a street race?"
     else
-      puts "You gaze at the body of your #{self.year} #{self.model}. Its #{color} paint sparkles in the sunlight."
+      puts "You gaze at the body of your #{year} #{model}. Its #{color} paint sparkles in the sunlight."
       puts "You feel happy."
     end
   end
@@ -70,20 +92,27 @@ class Vehicle
     puts "Mmm, sexy."
   end
 
+  def how_old
+    age
+  end
+
+  private 
+
+
+  def age
+    puts "This vehicle is #{(Time.now.year - @year).to_i} years old."
+  end
+
 end
 
 class MyCar < Vehicle
-
-  def initialize(year, color, model, gallons)
-    super(year, color, model, gallons)
-  end
   
   MAX_SPEED = 180
 
   def speed_up
     if self.speed != MAX_SPEED
       self.speed += 10
-      puts "You speed up to #{self.speed} kph."
+      puts "You speed up to #{speed} kph."
       if self.speed == 120
         puts "The engine purrs, the wind flows past the open window next to your seat."
         puts "You reach serenity..."
@@ -98,16 +127,13 @@ end
 
 class MyTruck < Vehicle
 
-  def initialize(year, color, model, gallons)
-    super(year, color, model, gallons)
-  end
-
   MAX_SPEED = 140
-
+  include Automatic
+  include Towability
   def speed_up
     if self.speed != MAX_SPEED
       self.speed += 10
-      puts "You speed up to #{self.speed} kph."
+      puts "You speed up to #{speed} kph."
       if self.speed == 120
         puts "The engine rumbles, the wind flows past the open window next to your seat."
         puts "You feel calm. If you had a dog, he'd probably be sticking his head out of the window."
