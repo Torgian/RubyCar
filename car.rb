@@ -86,6 +86,12 @@ class Vehicle
     end
   end
 
+  def speed_up
+      self.speed += 10
+      puts "You speed up to #{speed} kph."
+    
+  end
+
   def repaint(color)
     self.color = color
     puts "You changed your car's color to #{self.color}!"
@@ -111,8 +117,7 @@ class MyCar < Vehicle
 
   def speed_up
     if self.speed != MAX_SPEED
-      self.speed += 10
-      puts "You speed up to #{speed} kph."
+      super
       if self.speed == 120
         puts "The engine purrs, the wind flows past the open window next to your seat."
         puts "You reach serenity..."
@@ -132,8 +137,7 @@ class MyTruck < Vehicle
   include Towability
   def speed_up
     if self.speed != MAX_SPEED
-      self.speed += 10
-      puts "You speed up to #{speed} kph."
+      super
       if self.speed == 120
         puts "The engine rumbles, the wind flows past the open window next to your seat."
         puts "You feel calm. If you had a dog, he'd probably be sticking his head out of the window."
@@ -143,7 +147,6 @@ class MyTruck < Vehicle
       puts "Your fuel gauge needle slowly trickles downward..."
     end
   end
-
 end
 
 
